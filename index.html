@@ -67,30 +67,61 @@
     <input id="input" autocomplete="off" /><button>Send</button>
   </form>
 
-<script src="/socket.io/socket.io.js"></script>
-<script>
-  var socket = io();
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io()
 
-  var messages = document.getElementById('messages');
-  var form = document.getElementById('form');
-  var input = document.getElementById('input');
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (input.value) {
-      socket.emit('chat message', input.value);
-      input.value = '';
+    const currentUser = {
+      id: 2,
+      name: 'user1',
+      account: 'user1',
+      avatar: 'https://loremflickr.com/cache/resized/65535_51056220846_b8071e4404_q_140_140_nofilter.jpg'
     }
-  });
 
-  socket.on('chat message', function (msg) {
-    console.log('get message')
-    var item = document.createElement('li');
-    item.textContent = msg;
-    messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
-  });
-</script>
+    const messages = document.getElementById('messages')
+    const form = document.getElementById('form')
+    const input = document.getElementById('input')
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault()
+      const data = {
+        ...currentUser,
+        content: input.value,
+        createdAt: new Date()
+      }
+      if (input.value) {
+        socket.emit('chat message', data)
+        input.value = ''
+      }
+    })
+
+    socket.on('chat message', function (msg) {
+      console.log('get message')
+      const item = document.createElement('li')
+      item.innerHTML = `
+        <img src="${msg.avatar}">
+        ${msg.name} (${msg.createdAt}): ${msg.content}
+      `
+      messages.appendChild(item)
+      window.scrollTo(0, document.body.scrollHeight)
+    })
+
+    socket.on('user connected', function (user) {
+      const item = document.createElement('li')
+      item.innerHTML = `
+        <img src="${user.avatar}">
+        ${user.name} joined this chatroom at ${user.joinedAt}
+      `
+
+      messages.appendChild(item)
+      window.scrollTo(0, document.body.scrollHeight)
+    })
+
+    window.onload = userConnected(currentUser)
+    function userConnected(user) {
+      socket.emit('user connected', user)
+    }
+  </script>
 </body>
 
 </html>

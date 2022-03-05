@@ -1,4 +1,5 @@
 const { Server } = require("socket.io")
+const { Message, User } = require('../models')
 
 module.exports = (server) => {
   const io = new Server(server)
@@ -13,7 +14,23 @@ module.exports = (server) => {
     })
 
     socket.on('chat message', (msg) => {
-      io.emit('chat message', msg)
+      const data = {
+        ...msg
+      }
+      if (!msg.content.trim()) {
+        throw new Error('聊天訊息不可以空白')
+      }
+      if (!msg.id) {
+        throw new Error('請登入才可以發送聊天訊息')
+      }
+
+      return Message.create({
+        UserId: msg.id,
+        content: msg.content,
+        createdAt: msg.createdAt
+      }).then(msg => {
+        return io.emit('chat message', data)
+      })
     })
   })
 }

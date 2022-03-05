@@ -24,6 +24,12 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'followerId',
       as: 'Followings'
     })
+    User.hasMany(models.Message)
+    User.belongsToMany(models.Room, {
+      through: models.Member,
+      foreignKey: 'RoomId',
+      as: 'UsersInRoom'
+    })
   };
   return User;
 };

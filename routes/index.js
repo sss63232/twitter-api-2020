@@ -13,6 +13,7 @@ const tweetController = require('../controllers/tweet-controller')
 const replyController = require('../controllers/reply-controller')
 const likeController = require('../controllers/like-controller')
 const followshipController = require('../controllers/followship-controller.js')
+const chatController = require('../controllers/chat-controller')
 
 // users
 router.post('/api/signin', userController.signIn)
@@ -51,6 +52,10 @@ router.post('/api/admin/signin', adminController.signIn)
 router.get('/api/admin/users', authenticated, authenticatedAdmin, adminController.getAdminUsers)
 router.get('/api/admin/tweets', authenticated, authenticatedAdmin, adminController.getAdminTweets)
 router.delete('/api/admin/tweets/:id', authenticated, authenticatedAdmin, adminController.deleteAdminTweet)
+
+//chatroom
+router.get('/api/chatroom', chatController.startChatRoom)
+router.use('/api/chatroom/getMessages', chatController.getMessages) //auth 需再補上
 
 router.use('/api', apiErrorHandler)
 

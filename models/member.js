@@ -1,10 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Member = sequelize.define('Member', {
-    RoomId: DataTypes.NUMBER,
-    UserId: DataTypes.NUMBER
+    RoomId: DataTypes.INTEGER,
+    UserId: DataTypes.INTEGER
   }, {});
-  Member.associate = function(models) {
+  Member.associate = function (models) {
   };
   return Member;
 };

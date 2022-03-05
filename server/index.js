@@ -1,4 +1,5 @@
 const { Server } = require("socket.io")
+const publicChat = require('./modules/public-chat')
 
 module.exports = (server) => {
   const io = new Server(server, {
@@ -10,17 +11,19 @@ module.exports = (server) => {
   })
 
   io.on('connection', (socket) => {
+    const users = new Map()
+    console.log('user is connecting')
 
     socket.on('user connected', (user) => {
       const data = {
         ...user,
         joinedAt: new Date()
       }
+      users.set(socket.data.id, data)
       io.emit('user connected', data)
     })
-
-    socket.on('chat message', (msg) => {
-      io.emit('chat message', msg)
-    })
+    publicChat(io, socket, users)
   })
+
+
 }

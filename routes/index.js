@@ -18,7 +18,7 @@ const chatController = require('../controllers/chat-controller.js')
 // users
 router.post('/api/signin', userController.signIn)
 router.post('/api/users', userController.signUp)
-router.get('/api/user',authenticated, authenticatedUser, userController.getCurrentUser)
+router.get('/api/user', authenticated, authenticatedUser, userController.getCurrentUser)
 
 router.get('/api/users/top', authenticated, authenticatedUser, userController.topFollowed)
 router.get('/api/users/:id/replied_tweets', authenticated, authenticatedUser, userController.getReplies)
@@ -55,6 +55,7 @@ router.delete('/api/admin/tweets/:id', authenticated, authenticatedAdmin, adminC
 
 // chat room
 router.get('/api/chatroom', chatController.startChatRoom)
+router.use('/api/chatroom/getMessages', authenticated, authenticatedUser, chatController.getMessages)
 
 router.use('/api', apiErrorHandler)
 

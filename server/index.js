@@ -2,6 +2,7 @@ const { Server } = require("socket.io")
 const publicChat = require('./modules/public-chat')
 
 module.exports = (server) => {
+  const users = new Map()
   const io = new Server(server, {
     cors: {
       origin: '*',
@@ -11,14 +12,15 @@ module.exports = (server) => {
   })
 
   io.on('connection', (socket) => {
-    const users = new Map()
     console.log('user is connecting')
 
     socket.on('user connected', (user) => {
+      socket.data = { ...user }
       const data = {
-        ...user,
+        userSocketId: socket.id, ...socket.data,
         joinedAt: new Date()
       }
+
       users.set(socket.data.id, data)
       io.emit('user connected', data)
     })

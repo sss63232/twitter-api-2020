@@ -1,8 +1,15 @@
 const { Server } = require("socket.io")
-const { Message, User } = require('../models')
+const { Message } = require('../models')
 
 module.exports = (server) => {
-  const io = new Server(server)
+  const io = new Server(server, {
+    cors: {
+      origin: '*',
+      method: ['GET', 'POST']
+    },
+    pingTimeout: 30000
+  })
+
   io.on('connection', (socket) => {
 
     socket.on('user connected', (user) => {

@@ -66,6 +66,9 @@
   <form id="form" action="">
     <input id="input" autocomplete="off" /><button>Send</button>
   </form>
+  <button type="submit" id='enterRoom'>enterRoom事件</button>
+  <button type="submit" id='privateMessage1to2'>privateMessage1to2事件</button>
+  <button type="submit" id='privateMessage2to1'>privateMessage2to1事件</button>
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -81,6 +84,9 @@
     const messages = document.getElementById('messages')
     const form = document.getElementById('form')
     const input = document.getElementById('input')
+    const enterRoomBtn = document.querySelector('#enterRoom')
+    const privateMessageBtn1to2 = document.querySelector('#privateMessage1to2')
+    const privateMessageBtn2to1 = document.querySelector('#privateMessage2to1')
 
     form.addEventListener('submit', function (e) {
       e.preventDefault()
@@ -121,6 +127,42 @@
     function userConnected(user) {
       socket.emit('user connected', user)
     }
+
+    enterRoomBtn.addEventListener('click', e => {
+      e.preventDefault()
+      const data = {
+        id: 1,
+        listenerId: 2
+      }
+      socket.emit('enterRoom', data)
+    })
+
+    privateMessageBtn1to2.addEventListener('click', e => {
+        e.preventDefault()
+        const data = {
+          id: 1,
+          listenerId: 2,
+          content: '2安安你好啊',
+          createdAt: new Date()
+        }
+        socket.emit('privateMessage', data)
+      })
+
+      privateMessageBtn2to1.addEventListener('click', e => {
+        e.preventDefault()
+        const data = {
+          id: 2,
+          listenerId: 1,
+          content: '1安安你好啊',
+          createdAt: new Date()
+        }
+        socket.emit('privateMessage', data)
+      })
+
+      //get msg
+      socket.on('privateMessage', msg => {
+          console.log('這是privateMessage', msg)
+        })
   </script>
 </body>
 

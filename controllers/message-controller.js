@@ -1,4 +1,5 @@
-const { Message } = require('../models')
+const { Message, Room, Member, Sequelize } = require('../models')
+const { Op } = Sequelize
 
 const messageController = {
   saveMessage: (msg) => {
@@ -18,6 +19,46 @@ const messageController = {
     })
     .then(msg => {
       return msg
+    })
+  },
+  createPrivateRoom: (id, listenerId, roomName) => {
+    return Room.findOne({
+      where: { roomName }
+    })
+    .then(hasRoom => {
+      if (!hasRoom) {
+        return Room.create({ roomName })
+      }
+    })
+    .then(newRoom => {
+      if (newRoom) {
+        const RoomId = newRoom.dataValues.id
+        return Member.bulkCreate([
+          { RoomId, UserId: id },
+          { RoomId, UserId: listenerId }
+        ])
+      }
+    })
+    .then(() => { return { message: `room ${roomName} created` }})
+  },
+  clearUnread: (msg) => {
+    let firstId
+    let secondId
+    if (msg.id > msg.listenerId) {
+      firstId = msg.listenerId
+      secondId = msg.id
+    } else if (msg.id < msg.listenerId) {
+      firstId = msg.id
+      secondId = msg.listenerId
+    }
+
+    return Message.update({ isRead: true }, {
+      where: {
+        [Op.and]: [
+          { UserId: msg.listenerId },
+          { RoomId: `${firstId}n${secondId}` }
+        ]
+      }
     })
   }
 }

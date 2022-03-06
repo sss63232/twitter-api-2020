@@ -1,4 +1,4 @@
-const { generateRoomName } = require('../../libs/utility')
+const { generateRoomName, checkListenerOnline } = require('../../libs/utility')
 const messageController = require('../../controllers/message-controller')
 
 module.exports = (io, socket) => {

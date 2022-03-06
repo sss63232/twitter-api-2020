@@ -38,6 +38,23 @@ module.exports = (server) => {
     })
     privateChat(io, socket)
     publicChat(io, socket, users)
+
+    socket.on('disconnect', async reason => {
+      console.log(reason)
+      const matchingSockets = await io.in(`user${socket.data.id}`).allSockets()
+      const isDisconnected = matchingSockets.size === 0
+
+      if (isDisconnected) {
+        users.delete(socket.data.id)
+
+        socket.broadcast.emit('userDisconnected', {
+          name: socket.data.name,
+          isOnline: 0
+        })
+
+        io.emit('users', [...users.values()])
+      }
+    })
   })
 
 

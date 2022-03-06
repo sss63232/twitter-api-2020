@@ -6,7 +6,7 @@ module.exports = (server) => {
   const users = new Map()
   const io = new Server(server, {
     cors: {
-      origin: 'https://a2623212.github.io/project-simple-twitter-vue-chatroom/',
+      origin: 'https://a2623212.github.io',
       method: ['GET', 'POST'],
       credentials: true
     },

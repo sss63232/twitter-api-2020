@@ -24,6 +24,10 @@ app.get('/test', (req, res) => {
   console.log('TCL=> ~ app.get ~ req:', req.headers)
   res.send({ name: 'testing' })
 })
+app.get('/', (req, res) => {
+  console.log('TCL=> ~ app.get ~ req:', req.headers)
+  res.send({ name: 'testing' })
+})
 
 app.listen(port, () => console.log(`Example APP listening on port ${port}!`))
 

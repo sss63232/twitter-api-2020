@@ -20,6 +20,11 @@ app.use(methodOverride('_method'))
 // app.use('/upload', express.static(__dirname + '/upload'))
 
 app.use(routes)
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.get('/test', (req, res) => {
+  console.log('TCL=> ~ app.get ~ req:', req.headers)
+  res.send({ name: 'testing' })
+})
+
+app.listen(port, () => console.log(`Example APP listening on port ${port}!`))
 
 module.exports = app

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=development node app.js",
+    "cloud": "NODE_ENV=cloud node app.js",
     "dev": "npx nodemon app.js",
     "test": "mocha test --exit --recursive --timeout 5000"
   },

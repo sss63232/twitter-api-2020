@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const express = require('express')
+console.log('TCL=> ~ express:',)
 const cors = require('cors')
 const helpers = require('./_helpers')
 const routes = require('./routes')

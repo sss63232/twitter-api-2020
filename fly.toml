@@ -1,0 +1,19 @@
+# fly.toml app configuration file generated for twitter-clone-api on 2023-05-13T11:09:40+09:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "twitter-clone-api"
+primary_region = "nrt"
+
+[env]
+  PORT = "8080"
+  JWT_SECRET = "SKIP"
+  CLEARDB_DATABASE_URL = "mysql://uedopk3aevjyrepq:kPO4m23LdGMwK3gSCLgw@bcb9h2drujfykwvn80jm-mysql.services.clever-cloud.com:3306/bcb9h2drujfykwvn80jm"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0

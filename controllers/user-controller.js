@@ -44,6 +44,7 @@ const userController = {
       })
       .then(hash => {
         return User.create({
+          avatar: `https://api.dicebear.com/6.x/fun-emoji/svg?seed=${email}`,
           account,
           password: hash,
           name,
@@ -58,7 +59,7 @@ const userController = {
       })
       .catch(err => next(err))
   },
-  getCurrentUser:(req, res, next) => {
+  getCurrentUser: (req, res, next) => {
     const reqUser = helpers.getUser(req)
     const result = reqUser.toJSON()
     delete result.password
@@ -139,31 +140,31 @@ const userController = {
     const getUserId = Number(req.params.id)
     const reqUserId = helpers.getUser(req).id
     return Tweet.findAll({
-        where: { UserId: getUserId },
-        attributes: [
-          ['id', 'tweetId'],
-          'createdAt',
-          'description',
-          'image',
-          [
-            sequelize.literal(
-              '(SELECT COUNT(*) FROM Likes WHERE Likes.TweetId = Tweet.id)'
-            ),
-            'LikesCount'
-          ],
-          [
-            sequelize.literal(
-              '(SELECT COUNT(*) FROM Replies WHERE Replies.TweetId = Tweet.id)'
-            ),
-            'RepliesCount'
-          ]
+      where: { UserId: getUserId },
+      attributes: [
+        ['id', 'tweetId'],
+        'createdAt',
+        'description',
+        'image',
+        [
+          sequelize.literal(
+            '(SELECT COUNT(*) FROM Likes WHERE Likes.TweetId = Tweet.id)'
+          ),
+          'LikesCount'
         ],
-        include: [
-          { model: User, attributes: ['id', 'name', 'account', 'avatar'] },
-          { model: Like, attributes: ['userId'] }
-        ],
-        order: [['createdAt', 'DESC']]
-      })
+        [
+          sequelize.literal(
+            '(SELECT COUNT(*) FROM Replies WHERE Replies.TweetId = Tweet.id)'
+          ),
+          'RepliesCount'
+        ]
+      ],
+      include: [
+        { model: User, attributes: ['id', 'name', 'account', 'avatar'] },
+        { model: Like, attributes: ['userId'] }
+      ],
+      order: [['createdAt', 'DESC']]
+    })
       .then(tweets => {
         if (tweets.length === 0) return res.status(200).json({ isEmpty: true })
 
@@ -301,7 +302,7 @@ const userController = {
         ]
       },
       attributes: { exclude: ['id', 'UserId', 'createdAt', 'updatedAt'] },
-      order: [['createdAt', 'DESC']] 
+      order: [['createdAt', 'DESC']]
     },
     )
       .then(likes => {

@@ -333,16 +333,19 @@ const userController = {
     return User.findAll({
       include: { model: User, as: 'Followers' },
       attributes: ['id', 'name', 'account', 'avatar', 'createdAt'],
-      where: { role: { $not: 'admin' } }
+      where: {
+        role: { $not: 'admin' },
+        id: { $not: reqUser.id }
+      },
     })
       .then(users => {
         const reqUserFollowing = reqUser.Followings.length > 1 ? reqUser.Followings : [reqUser.Followings]
 
         const result = users
-          .map(u => ({
-            ...u.toJSON(),
-            followedCount: u.Followers.length,
-            isFollowing: reqUserFollowing.some(f => f.id === u.id)
+          .map(user => ({
+            ...user.toJSON(),
+            followedCount: user.Followers.length,
+            isFollowing: reqUserFollowing.some(following => following.id === user.id)
           }))
           .sort((a, b) => b.followedCount - a.followedCount || b.createdAt - a.createdAt)
           .slice(0, 10)

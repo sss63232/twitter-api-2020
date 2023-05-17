@@ -204,11 +204,14 @@ const userController = {
             ...r.toJSON()
           }))
 
+
         result.forEach(r => {
-          r.Tweet.TweetUserId = r.Tweet.User.id
-          r.Tweet.TweetUserName = r.Tweet.User.name
-          r.Tweet.TweetUserAccount = r.Tweet.User.account
-          delete r.Tweet.User
+          if (!!r.Tweet) {
+            r.Tweet.TweetUserId = r.Tweet.User.id
+            r.Tweet.TweetUserName = r.Tweet.User.name
+            r.Tweet.TweetUserAccount = r.Tweet.User.account
+            delete r.Tweet.User
+          }
         })
 
         return res.status(200).json(result)
@@ -306,21 +309,27 @@ const userController = {
     },
     )
       .then(likes => {
-        if (likes.length === 0) return res.status(200).json({ isEmpty: true })
+        if (likes.length === 0) {
+          return res.status(200).json({ isEmpty: true })
+        }
+
         const getUserId = helpers.getUser(req).id
         const likesArray = likes
           .map(like => ({
             ...like.toJSON(),
-            isLiked: like.Tweet.Likes.map(u => u.UserId).includes(getUserId)
+            isLiked: like.Tweet ? like.Tweet.Likes.map(u => u.UserId).includes(getUserId) : false,
           }))
         likesArray
           .forEach(like => {
-            like.Tweet.likesCount = like.Tweet.Likes.length
-            like.Tweet.repliesCount = like.Tweet.Replies.length
-            delete like.Tweet.Likes
-            delete like.Tweet.Replies
-            delete like.Tweet.UserId
-            delete like.tweetId
+            if (!!like.Tweet) {
+              like.Tweet.likesCount = like.Tweet.Likes.length
+              like.Tweet.repliesCount = like.Tweet.Replies.length
+              delete like.Tweet.Likes
+              delete like.Tweet.Replies
+              delete like.Tweet.UserId
+              delete like.tweetId
+            }
+
           })
 
         return res.json(likesArray)

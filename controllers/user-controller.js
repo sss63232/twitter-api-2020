@@ -43,7 +43,12 @@ const userController = {
         return bcrypt.hash(password, 10)
       })
       .then(hash => {
+        const ip = req.ip || req.connection.remoteAddress
+        const ua = req.headers['user-agent'] || ''
+
         return User.create({
+          ip,
+          ua,
           avatar: `https://api.dicebear.com/6.x/fun-emoji/svg?seed=${email}`,
           account,
           password: hash,

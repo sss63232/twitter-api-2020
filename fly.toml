@@ -9,7 +9,7 @@ primary_region = "nrt"
 [env]
   PORT = "8080"
   JWT_SECRET = "SKIP"
-  CLEARDB_DATABASE_URL = "mysql://uedopk3aevjyrepq:kPO4m23LdGMwK3gSCLgw@bcb9h2drujfykwvn80jm-mysql.services.clever-cloud.com:3306/bcb9h2drujfykwvn80jm"
+  CLEARDB_DATABASE_URL = ""
 
 [http_service]
   internal_port = 8080

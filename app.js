@@ -1,13 +1,11 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config() // 讀取 .env 把値讀送至node的process.env
+}
 require('newrelic');
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
-}
 
 const express = require('express')
-console.log('TCL=> ~ express:',)
 const cors = require('cors')
-const helpers = require('./_helpers')
 const routes = require('./routes')
 const passport = require('./config/passport')
 const methodOverride = require('method-override')
@@ -23,12 +21,11 @@ app.use(methodOverride('_method'))
 // app.use('/upload', express.static(__dirname + '/upload'))
 
 app.use(routes)
+
 app.get('/test', (req, res) => {
-  console.log('TCL=> ~ app.get ~ req:', req.headers)
   res.send({ name: 'testing' })
 })
 app.get('/', (req, res) => {
-  console.log('TCL=> ~ app.get ~ req:', req.headers)
   res.send({ name: 'testing' })
 })
 

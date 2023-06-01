@@ -1,4 +1,4 @@
-const { Like } = require('../models')
+const { Like } = require('../models/db')
 const helpers = require('../_helpers')
 
 const likeController = {

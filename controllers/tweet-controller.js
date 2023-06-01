@@ -1,4 +1,4 @@
-const { Tweet, Reply, Like, User } = require('../models')
+const { Tweet, Reply, Like, User } = require('../models/db')
 const helpers = require('../_helpers')
 
 const tweetController = {
@@ -11,7 +11,7 @@ const tweetController = {
         { model: Like },
         { model: User }
       ],
-      attributes: [ ['id', 'tweetId'], 'UserId', 'description', 'image', 'createdAt', 'updatedAt' ]
+      attributes: [['id', 'tweetId'], 'UserId', 'description', 'image', 'createdAt', 'updatedAt']
     })
       .then(tweets => {
         const tweetsArray = tweets

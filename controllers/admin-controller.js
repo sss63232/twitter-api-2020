@@ -1,4 +1,4 @@
-const { User, Tweet, Reply, Like } = require('../models')
+const { User, Tweet, Reply, Like } = require('../models/db')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 

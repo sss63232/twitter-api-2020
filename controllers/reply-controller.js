@@ -1,4 +1,4 @@
-const { Reply, Tweet } = require('../models')
+const { Reply, Tweet } = require('../models/db')
 const helpers = require('../_helpers')
 
 const replyController = {
@@ -6,7 +6,7 @@ const replyController = {
     const getTweetId = Number(req.params.id)
     return Reply.findAll({
       where: { TweetId: getTweetId },
-      order: [[ 'createdAt', 'DESC' ]]
+      order: [['createdAt', 'DESC']]
     })
       .then(replies => {
         res.status(200).json(replies)

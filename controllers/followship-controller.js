@@ -1,4 +1,4 @@
-const { User, Followship } = require('../models')
+const { User, Followship } = require('../models/db')
 const helpers = require('../_helpers')
 
 const followshipController = {

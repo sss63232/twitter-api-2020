@@ -8,12 +8,15 @@ const env = process.env.NODE_ENV || 'development';
 const envConfig = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
+const dialect = 'mysql'
 let sequelize;
-if (!!envConfig.use_env_variable) {
-  sequelize = new Sequelize(process.env.DATABASE, process.env.DB_USER, process.env.DB_PASSWORD, {
-    dialect: 'mysql',
-    host: process.env.DB_HOST
-  });
+if (envConfig.use_env_variable) {
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect,
+    dialectOptions: {
+      ssl: { rejectUnauthorized: false, }
+    }
+  })
 } else {
   sequelize = new Sequelize(envConfig.database, envConfig.username, envConfig.password, envConfig);
 }

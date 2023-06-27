@@ -2,6 +2,7 @@ name: Keep alive cron job
 on:
   schedule:
     - cron: "0 12 * * *" # https://crontab.guru/#0_12_*_*_*
+  workflow_dispatch:
 jobs:
   cron:
     runs-on: ubuntu-latest

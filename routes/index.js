@@ -14,6 +14,9 @@ const replyController = require('../controllers/reply-controller')
 const likeController = require('../controllers/like-controller')
 const followshipController = require('../controllers/followship-controller.js')
 
+const keepAliveController = require('../controllers/keep-alive-controller')
+
+
 // users
 router.post('/api/signin', userController.signIn)
 router.post('/api/users', userController.signUp)
@@ -51,6 +54,9 @@ router.post('/api/admin/signin', adminController.signIn)
 router.get('/api/admin/users', authenticated, authenticatedAdmin, adminController.getAdminUsers)
 router.get('/api/admin/tweets', authenticated, authenticatedAdmin, adminController.getAdminTweets)
 router.delete('/api/admin/tweets/:id', authenticated, authenticatedAdmin, adminController.deleteAdminTweet)
+
+//keep-alive
+router.put('/api/keep-alive', keepAliveController.keepAlive)
 
 router.use('/api', apiErrorHandler)
 

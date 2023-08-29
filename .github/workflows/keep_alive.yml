@@ -1,7 +1,7 @@
 name: Keep alive cron job
 on:
   schedule:
-    - cron: "0 12 * * *" # https://crontab.guru/#0_12_*_*_*
+    - cron: "0 * * * *" # https://crontab.guru/every-1-hour
   workflow_dispatch:
 jobs:
   cron:
